@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix} This code is for Parallel and Distributed Algorithms
+${licensePrefix} laboratory at Gdansk University of Technology
+<#if licenseLast??>
+${licenseLast}
+</#if>
