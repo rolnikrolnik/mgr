@@ -73,7 +73,6 @@ int main(int argc, char **argv)
             MPI_Recv(&resulttemp,1,MPI_DOUBLE,MPI_ANY_SOURCE,RESULT,MPI_COMM_WORLD,&status);
 			result+=resulttemp;
 			received++;
-            #ifdef DEBUG
 
             // check the sender and send some more data
             range[1]=range[0]+RANGESIZE;
@@ -84,6 +83,12 @@ int main(int argc, char **argv)
             range[0]=range[1];
 
         } while (range[1]<b);
+		// shut down the slaves
+
+		for (i = 1; i<proccount; i++)
+		{
+			MPI_Send(NULL, 0, MPI_DOUBLE, i, FINISH, MPI_COMM_WORLD);
+		}
 
         // now receive results from the processes
         //for(i=0;i < (proccount-1);i++) {
@@ -98,11 +103,6 @@ int main(int argc, char **argv)
             result+=resulttemp;
         }
 
-        // shut down the slaves
-        for(i=1;i<proccount;i++) 
-        {
-            MPI_Send(NULL,0,MPI_DOUBLE,i,FINISH,MPI_COMM_WORLD);
-        }
         // now display the result
         printf("\nHi, I am process 0, the result is %f\n",result);
 
